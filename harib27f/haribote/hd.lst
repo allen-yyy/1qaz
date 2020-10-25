@@ -1,0 +1,68 @@
+     1 00000000                                 [FORMAT "WCOFF"]
+     2 00000000                                 [INSTRSET "i486p"]
+     3 00000000                                 [OPTIMIZE 1]
+     4 00000000                                 [OPTION 1]
+     5 00000000                                 [BITS 32]
+     6 00000000                                 	EXTERN	_io_out8
+     7 00000000                                 	EXTERN	_io_in8
+     8 00000000                                 	EXTERN	_boxfill8
+     9 00000000                                 	EXTERN	_sprintf
+    10 00000000                                 	EXTERN	_putfonts8_asc
+    11 00000000                                 	EXTERN	_go_HRB_know
+    12 00000000                                 [FILE "hd.c"]
+    13                                          [SECTION .data]
+    14 00000000                                 LC0:
+    15 00000000 49 4E 54 20 32 45 20 28 49 52   	DB	"INT 2E (IRQ-14) : hd  %d %d",0x00
+       0000000A 51 2D 31 34 29 20 3A 20 68 64 
+       00000014 20 20 25 64 20 25 64 00 
+    16                                          [SECTION .text]
+    17 00000000                                 	GLOBAL	_inthandler2e
+    18 00000000                                 _inthandler2e:
+    19 00000000 55                              	PUSH	EBP
+    20 00000001 89 E5                           	MOV	EBP,ESP
+    21 00000003 53                              	PUSH	EBX
+    22 00000004 83 EC 30                        	SUB	ESP,48
+    23 00000007 8D 5D CC                        	LEA	EBX,DWORD [-52+EBP]
+    24 0000000A 6A 62                           	PUSH	98
+    25 0000000C 68 000000A0                     	PUSH	160
+    26 00000011 E8 [00000000]                   	CALL	_io_out8
+    27 00000016 6A 62                           	PUSH	98
+    28 00000018 6A 20                           	PUSH	32
+    29 0000001A E8 [00000000]                   	CALL	_io_out8
+    30 0000001F 68 000001F7                     	PUSH	503
+    31 00000024 E8 [00000000]                   	CALL	_io_in8
+    32 00000029 6A 0F                           	PUSH	15
+    33 0000002B 68 000000FF                     	PUSH	255
+    34 00000030 A2 [0000001C]                   	MOV	BYTE [_hd_status],AL
+    35 00000035 6A 00                           	PUSH	0
+    36 00000037 6A 00                           	PUSH	0
+    37 00000039 6A 00                           	PUSH	0
+    38 0000003B 0F BF 05 00000FF4               	MOVSX	EAX,WORD [4084]
+    39 00000042 50                              	PUSH	EAX
+    40 00000043 FF 35 00000FF8                  	PUSH	DWORD [4088]
+    41 00000049 E8 [00000000]                   	CALL	_boxfill8
+    42 0000004E 83 C4 30                        	ADD	ESP,48
+    43 00000051 0F B6 05 [0000001C]             	MOVZX	EAX,BYTE [_hd_status]
+    44 00000058 50                              	PUSH	EAX
+    45 00000059 0F B6 05 00000475               	MOVZX	EAX,BYTE [1141]
+    46 00000060 50                              	PUSH	EAX
+    47 00000061 68 [00000000]                   	PUSH	LC0
+    48 00000066 53                              	PUSH	EBX
+    49 00000067 E8 [00000000]                   	CALL	_sprintf
+    50 0000006C 53                              	PUSH	EBX
+    51 0000006D 6A 07                           	PUSH	7
+    52 0000006F 6A 00                           	PUSH	0
+    53 00000071 6A 00                           	PUSH	0
+    54 00000073 0F BF 05 00000FF4               	MOVSX	EAX,WORD [4084]
+    55 0000007A 50                              	PUSH	EAX
+    56 0000007B FF 35 00000FF8                  	PUSH	DWORD [4088]
+    57 00000081 E8 [00000000]                   	CALL	_putfonts8_asc
+    58 00000086 83 C4 28                        	ADD	ESP,40
+    59 00000089 E8 [00000000]                   	CALL	_go_HRB_know
+    60 0000008E 8B 5D FC                        	MOV	EBX,DWORD [-4+EBP]
+    61 00000091 C9                              	LEAVE
+    62 00000092 C3                              	RET
+    63 00000093                                 	GLOBAL	_hd_status
+    64                                          [SECTION .data]
+    65 0000001C                                 _hd_status:
+    66 0000001C 00                              	RESB	1

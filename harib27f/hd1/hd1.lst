@@ -1,0 +1,34 @@
+     1 00000000                                 [FORMAT "WCOFF"]
+     2 00000000                                 [INSTRSET "i486p"]
+     3 00000000                                 [OPTIMIZE 1]
+     4 00000000                                 [OPTION 1]
+     5 00000000                                 [BITS 32]
+     6 00000000                                 	EXTERN	__alloca
+     7 00000000                                 	EXTERN	_api_hd_no
+     8 00000000                                 	EXTERN	_sprintf
+     9 00000000                                 	EXTERN	_api_putstr0
+    10 00000000                                 	EXTERN	_api_end
+    11 00000000                                 [FILE "hd1.c"]
+    12                                          [SECTION .data]
+    13 00000000                                 LC0:
+    14 00000000 25 78 00                        	DB	"%x",0x00
+    15                                          [SECTION .text]
+    16 00000000                                 	GLOBAL	_HariMain
+    17 00000000                                 _HariMain:
+    18 00000000 55                              	PUSH	EBP
+    19 00000001 B8 00005210                     	MOV	EAX,21008
+    20 00000006 89 E5                           	MOV	EBP,ESP
+    21 00000008 53                              	PUSH	EBX
+    22 00000009 E8 [00000000]                   	CALL	__alloca
+    23 0000000E 8D 9D FFFFADEC                  	LEA	EBX,DWORD [-21012+EBP]
+    24 00000014 E8 [00000000]                   	CALL	_api_hd_no
+    25 00000019 50                              	PUSH	EAX
+    26 0000001A 68 [00000000]                   	PUSH	LC0
+    27 0000001F 53                              	PUSH	EBX
+    28 00000020 E8 [00000000]                   	CALL	_sprintf
+    29 00000025 53                              	PUSH	EBX
+    30 00000026 E8 [00000000]                   	CALL	_api_putstr0
+    31 0000002B E8 [00000000]                   	CALL	_api_end
+    32 00000030 8B 5D FC                        	MOV	EBX,DWORD [-4+EBP]
+    33 00000033 C9                              	LEAVE
+    34 00000034 C3                              	RET

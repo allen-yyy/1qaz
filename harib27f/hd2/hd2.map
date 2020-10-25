@@ -1,0 +1,48 @@
+text size :   1905(0x00771)
+data size :   1200(0x004B0)
+bss  size :      0(0x00000)
+
+0x00000024 : (.text)
+0x00000024 : _HariMain
+0x00000085 : _hd_cmd_out
+0x00000108 : _print_identify_info
+0x0000026E : _api_putstr0
+0x0000026E : (.text)
+0x0000027C : _api_end
+0x0000027C : (.text)
+0x00000283 : _port_read
+0x00000283 : (.text)
+0x00000297 : _io_out8
+0x00000297 : (.text)
+0x000002A7 : _wait_int
+0x000002A7 : (.text)
+0x000002AF : (.text)
+0x000002AF : _HariStartup
+0x000002B8 : _sprintf
+0x000002B8 : (.text)
+0x000002CC : (.text)
+0x00000308 : _strtoul0
+0x000003DB : (.text)
+0x00000403 : _vsprintf
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00000000 : (.data)
+0x00018C00 : (.data)
+0x00018C80 : _PARTITION_ENTRY
+0x00018C90 : _hdbuf
+0x00019090 : (.data)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
+0x00000000 : (.bss)
