@@ -2,6 +2,7 @@
 		name       Date
 		Allen      2020.10.6
 		Allen      2021.1.20	disk_check
+		Allen	   2021.1.21	disk_check
 */ 
 #include "com.haribote.fs.inc.h"
 
@@ -13,5 +14,7 @@ void s1_alloc(struct s1 *a_s1)
 
 int disk_check(int *disk)
 {
-	
+	*disk+=512;
+	//s1
+	struct s1 *ds1=disk;
 }
