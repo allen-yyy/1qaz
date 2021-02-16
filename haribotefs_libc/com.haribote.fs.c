@@ -23,6 +23,7 @@ BOOL mkfs()
 {
 	int *p;
 	
+	
 	write_bs(p);
 	write_s1(p);
 	write_tab(p,16);
