@@ -7,7 +7,8 @@
 		Allen		2020.11.22		R_FLAG DA_FLAG FD_FLAG S_FLAG E_FLAG
 		Allen		2020.12.16		log LOG_COPY LOG_WRITE LOG_READ
 */
-#include "bootpack.h"
+//#include "bootpack.h"
+#include "dpi.h"
 #define FS_NAME "hafs"
 
 struct fren {
@@ -18,7 +19,7 @@ struct fren {
 
 struct map {
 	int frens;
-	struct fren[];
+	struct fren[256];
 };
 
 struct go {
@@ -100,3 +101,14 @@ struct log {
 #define LOG_COPY 0x1
 #define LOG_WRITE 0x2
 #define LOG_READ 0x3 
+
+void write_bs(int *p);
+void write_s1(int *p);
+void write_tab(int *p,int size);
+void write_bsmar(int *p);
+void write_sn(int *p,int n);
+//write_tab(p,16);
+void write_filesys(int *p);
+//write_sn(p,3);
+//write_tab(p,16);
+void write_log(int *p);

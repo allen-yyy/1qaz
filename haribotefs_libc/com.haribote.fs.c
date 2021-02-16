@@ -18,3 +18,47 @@ int disk_check(int *disk)
 	//s1
 	struct s1 *ds1=disk;
 }
+
+BOOL mkfs()
+{
+	int *p;
+	
+	write_bs(p);
+	write_s1(p);
+	write_tab(p,16);
+	write_bsmar(p);
+	write_sn(p,2);
+	write_tab(p,16);
+	write_filesys(p);
+	write_sn(p,3);
+	write_tab(p,16);
+	write_log(p);
+	hd_write(p,0,0);
+	
+	return TURE;
+}
+
+void write_bs(int *p)
+{
+	
+	return;
+}
+
+void write_s1(int *p)
+{
+	return;
+}
+
+void write_tab(int *p,int size)
+{
+	return;
+}
+void write_bsmar(int *p)
+{
+	return;
+}
+
+void write_sn(int *p,int n)
+{
+	return;
+}
