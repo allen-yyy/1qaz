@@ -23,7 +23,7 @@ struct map {
 };
 
 struct go {
-	char *filesystem;
+	char filesystem[5];
 	int s_long;
 };
 
@@ -83,8 +83,8 @@ struct FILED {
 
 struct root {
 	int r_flag;
-	struct FDINFO files[];
 	int s_n;
+	struct FDINFO files[];
 };
 
 #define R_FLAG 0x52525252
@@ -112,3 +112,6 @@ void write_filesys(int *p);
 //write_sn(p,3);
 //write_tab(p,16);
 void write_log(int *p);
+
+#define E_BOOT 0x1
+#define E_UNBOOT 0x20

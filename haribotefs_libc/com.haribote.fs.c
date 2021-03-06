@@ -41,12 +41,14 @@ BOOL mkfs()
 
 void write_bs(int *p)
 {
-	
+	p[0x1fe]=0x55;
+	p[0x1ff]=0xaa;
 	return;
 }
 
 void write_s1(int *p)
 {
+	
 	return;
 }
 
