@@ -48,7 +48,14 @@ void write_bs(int *p)
 
 void write_s1(int *p)
 {
+	struct s1 *ws1;
+	ws1->E_flag = E_FLAG;
+	ws1->E_n = 0;
+	ws1->E_type = E_BOOT;
+	ws1->go_s1.filesystem = FS_NAME;
+	ws1->go_s1.s_long = sizeof(struct s1);
 	
+	memcpy(p+512,ws1,sizeof(struct s1));
 	return;
 }
 
@@ -58,6 +65,11 @@ void write_tab(int *p,int size)
 }
 void write_bsmar(int *p)
 {
+	struct bsmar *rbsmar;
+	rbsmar->hd_j_s1 = 0;
+	rbsmar->hd_j_s2 = 0;
+	rbsmar->map1.frens = -1;
+	rbsmar->m_flag = R_FLAG;
 	return;
 }
 

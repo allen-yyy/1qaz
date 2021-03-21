@@ -92,6 +92,7 @@ struct root {
 #define FD_FLAG 0x46444644
 #define S_FLAG 0x53535353
 #define E_FLAG 0x45454545
+#define R_FLAG 0x52525252
 
 struct log {
 	char log[0x30];
