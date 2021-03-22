@@ -70,10 +70,16 @@ void write_bsmar(int *p)
 	rbsmar->hd_j_s2 = 0;
 	rbsmar->map1.frens = -1;
 	rbsmar->m_flag = R_FLAG;
+	memcpy(p+512+sizeof(s1)+16,ws1,sizeof(struct s1));
 	return;
 }
 
 void write_sn(int *p,int n)
 {
+	struct sn *sn1;
+	sn1->s_n = n;
+	sn1->s_flag= S_FLAG;
+	sn1->gos.filesystem = FS_NAME;
+	sn1->gos.s_long = sizeof(struct sn);
 	return;
 }
