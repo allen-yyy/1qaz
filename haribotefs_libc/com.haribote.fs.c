@@ -17,6 +17,8 @@ int disk_check(int *disk)
 	*disk+=512;
 	//s1
 	struct s1 *ds1=disk;
+	if(ds1->E_flag == E_FLAG) return 1;
+	return 0;
 }
 
 BOOL mkfs()
@@ -81,5 +83,20 @@ void write_sn(int *p,int n)
 	sn1->s_flag= S_FLAG;
 	sn1->gos.filesystem = FS_NAME;
 	sn1->gos.s_long = sizeof(struct sn);
+	
+	if(n==2){
+		memcpy(p+512+2048,sn1,sizeof(struct sn));
+		return;
+	}
+	memcpy(p+512+2048+2048,sn1,sizeof(struct sn));
 	return;
 }
+void write_filesys(int *p)
+{
+	struct root *fsys;
+	fsys->r_flag = R_FLAG;
+	fsys->s_n = 8;
+	write_filep(p,".",TYPE_DIR);
+	write_filep(p,"..",TYPE_DIR);
+	return; 
+} 
