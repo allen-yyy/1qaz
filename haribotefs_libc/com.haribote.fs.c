@@ -96,7 +96,29 @@ void write_filesys(int *p)
 	struct root *fsys;
 	fsys->r_flag = R_FLAG;
 	fsys->s_n = 8;
-	write_filep(p,".",TYPE_DIR);
-	write_filep(p,"..",TYPE_DIR);
+	
+	fsys->files[0].fd_flag = FD_FLAG;
+	fsys->files[0].filename = ".";
+	fsys->files[0].filenamel = 1;
+	
+	fsys->files[0].fd_flag = FD_FLAG;
+	fsys->files[0].filename = "..";
+	fsys->files[0].filenamel = 2;
+	
+	fsys->files[0].fd_flag = FD_FLAG;
+	fsys->files[0].filename = "system";
+	fsys->files[0].filenamel = 6;
+	
+	fsys->files[0].fd_flag = FD_FLAG;
+	fsys->files[0].filename = "boot";
+	fsys->files[0].filenamel = 4;
+	
+	fsys->files[0].fd_flag = FD_FLAG;
+	fsys->files[0].filename = "data";
+	fsys->files[0].filenamel = 4;
+	
+	fsys->files[0].fd_flag = FD_FLAG;
+	fsys->files[0].filename = "device";
+	fsys->files[0].filenamel = 6;
 	return; 
 } 
