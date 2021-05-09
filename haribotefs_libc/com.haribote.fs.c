@@ -122,3 +122,11 @@ void write_filesys(int *p)
 	fsys->files[0].filenamel = 6;
 	return; 
 } 
+void write_log(int *p)
+{
+	struct log log1[20];
+	log1[0].log = "init fs";
+	log1[0].type = LOG_WRITE;
+	memcpy(p+512+2048+2048+sizeof(struct sn)+16,log1,sizeof(struct log));
+	return;
+} 
