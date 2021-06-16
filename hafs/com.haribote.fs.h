@@ -38,7 +38,41 @@ struct map{
 struct bsmar{
 	int flag;
 	char stflag;
+	struct map maps; 
 };
 
+struct FILED{
+	int flag;
+	char filename[30];
+	char fileext[10];
+	int fsegL;
+	int fsegM;
+	int fsegH;
+	int flongL;
+	int flongH;
+	long flongl;
+	char dir;
+	char root[3];
+};
 
+struct FILEA{
+	int flag;
+	int longL;
+	int longH;
+	long longl;
+};
 
+#define segflag "segn"
+#define etcflag "etc1"
+#define fileflag "file"
+#define dataflag "data"
+
+struct rootdir{
+	int flag;  //data
+	struct FILED files[20];
+};
+
+struct log{
+	int type;
+	int shutflag;
+};
