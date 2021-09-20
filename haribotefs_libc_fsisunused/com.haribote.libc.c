@@ -27,7 +27,7 @@ int printf(char *format, ...)
 	int i;
 	
 	va_start(ap,format);
-	i = vsptintf(s,format,ap);
+	i = vsprintf(s,format,ap);
 	api_putstr0(s);
 	va_end(ap);
 	return i;
