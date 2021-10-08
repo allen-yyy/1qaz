@@ -1,5 +1,5 @@
 /*
-	Name: com.haribote.fs.h
+	Name: com.haribote.fs.inc.h
 	Copyright: 
 	Author: Allen
 	Date: 14/06/21 17:56
@@ -62,10 +62,10 @@ struct FILEA{
 	long longl;
 };
 
-#define segflag "segn"
-#define etcflag "etc1"
-#define fileflag "file"
-#define dataflag "data"
+#define segflag 0x6e676573	//seg1
+#define etcflag 0x31637465	//etc1
+#define fileflag 0x656c6966	//file
+#define dataflag 0x61746164	//data
 
 struct rootdir{
 	int flag;  //data
