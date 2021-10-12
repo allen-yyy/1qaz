@@ -6,9 +6,11 @@
 	Description: 
 */
 
-#define FS_NAME "HAFS1"
-#define SEG_LONG 2048
-#define BLOCK_LONG 1048
+#define FS_NAME "HAFS"
+#define _VERSION(a,b) a<<16+0x2e<<8+b
+#define FS_VERSION _VERSION(1,0) 
+#define SEG_LONG 8192
+#define BLOCK_LONG 4096
 
 struct seg1{
 	int flag;
@@ -22,23 +24,26 @@ struct segn{
 };
 
 struct freetable{
-	long segL;
-	long segM;
-	long segH;
-	long freelongL; 
-	long freelongM;
-	long freelongH;
+	int bitmap_a[40]; //128 seg as a bit. 
 };
 
 struct map{
 	int frees;
-	struct freetable[0xff];
+	struct freetable free[40];
 };
 
-struct bsmar{
+struct bsmar{	//like ext2 fs's super block.
 	int flag;
-	char stflag;
-	struct map maps; 
+	int ectflag;
+	struct map maps;
+	char filesys[6];
+	int version;
+	int allsize1;
+	int allsize2;
+	int allsize3;
+	int allsize4;
+	int os;		//usually is 1--hariboteos
+	int seg_a_bit;	//usually is 128 
 };
 
 struct FILED{
@@ -62,10 +67,11 @@ struct FILEA{
 	long longl;
 };
 
-#define segflag 0x6e676573	//seg1
-#define etcflag 0x31637465	//etc1
-#define fileflag 0x656c6966	//file
-#define dataflag 0x61746164	//data
+#define segflag		0x6e676573	//seg1
+#define bsmarflag	0x616d7362  //bsma
+#define etcflag		0x31637465	//etc1
+#define fileflag	0x656c6966	//file
+#define dataflag	0x61746164	//data
 
 struct rootdir{
 	int flag;  //data
