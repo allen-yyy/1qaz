@@ -2,7 +2,7 @@
 #include <string>
 #include <cstring>
 using namespace std;
-int a[205],b[205],c[205],lena,lenb,lenc,jw,j;
+int a[205],b[205],c[410],lena,lenb,lenc,jw,j;
 string x,y,z;
 int main()
 {
