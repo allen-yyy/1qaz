@@ -98,11 +98,6 @@ struct rootdir{
 	struct FILED files[0];
 };
 
-struct log{
-	int many;
-	struct log_a logs[0];
-};
-
 struct log_a{
 	int type;
 	#define LOG_READ 1<<0
@@ -111,4 +106,9 @@ struct log_a{
 	int segA;//it*1
 	int segB;//it*10
 	int segC;//it*10
+};
+
+struct log{
+	int many;
+	struct log_a logs[0];
 };
