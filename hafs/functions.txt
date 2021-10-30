@@ -1,0 +1,5 @@
+//Needs functions
+void disk_read(int disknr,int lba,int size,void *buf);//1
+void *mem_alloc(int size);
+void mem_free(void *buf);
+void memcpy(void *a,void *b,int size);

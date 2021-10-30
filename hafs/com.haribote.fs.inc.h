@@ -3,15 +3,16 @@
 	Copyright: 
 	Author: Allen
 	Date: 14/06/21 17:56
-	Description: 
+	Description: hafs1 header 
 */
 
 #define FS_NAME "HAFS"
-#define _VERSION(a,b) a<<16+0x2e<<8+b
+#define _VERSION(a,b) a+0x2e<<16+b<<24
 #define FS_VERSION _VERSION(1,0) 
 #define SEG_LONG 8192
 #define BLOCK_LONG 4096
 #define NAMELENMAX 256
+#define ROOTFILEMAX 185
 
 struct seg1{
 	int flag;
@@ -54,10 +55,11 @@ struct bsmar{	//like ext2 fs's super block.
 	#define STATUS_CLEAN 1<<0
 	#define STATUS_WRITE 1<<1
 	#define STATUS_ERROR 1<<2
-	//1742B free
-	char pad1[2];
+	#define STATUS_BOOTS 1<<3  //if computer boot and mount this fs,set it.
+	//1724B free
+	//char pad1[2];
 	
-	int pad[435];
+	int pad[431];
 };
 
 struct FILED{
@@ -68,11 +70,12 @@ struct FILED{
 	int flongL;//use B
 	int flongM;//use KB
 	int flongH;//use KB,too
-	char isdir;
+	int type;  //file type
+	char dirs; //if it is dir,the number of dir FILEDs.
 	char root[3];
-	int  sizeofthis;
+	int  nextoff;
 	int filenamelen; 
-	char filename[30];
+	char filename[0];//44 B total
 };
 
 struct FILEA{
@@ -80,6 +83,7 @@ struct FILEA{
 	int longL;//use B
 	int longH;//use KB
 	long longl;//use KB,too
+	//then the data
 };
 
 #define segflag		0x6e676573	//segn
@@ -90,7 +94,8 @@ struct FILEA{
 
 struct rootdir{
 	int flag;  //data
-	struct FILED files[20];
+	int numfile;
+	struct FILED files[0];
 };
 
 struct log{
@@ -102,7 +107,7 @@ struct log_a{
 	int type;
 	#define LOG_READ 1<<0
 	#define LOG_WRITE 1<<1
-	#define LOG_EXDEV 1<<1	
+	#define LOG_EXDEV 1<<2	
 	int segA;//it*1
 	int segB;//it*10
 	int segC;//it*10
