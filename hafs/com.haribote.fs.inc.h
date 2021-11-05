@@ -37,7 +37,7 @@ struct map{
 
 struct bsmar{	//like ext2 fs's super block.
 	int flag;
-	int ectflag;
+	int etcflag;
 	struct map maps;
 	char filesys[6];
 	int version;
@@ -103,6 +103,7 @@ struct log_a{
 	#define LOG_READ 1<<0
 	#define LOG_WRITE 1<<1
 	#define LOG_EXDEV 1<<2	
+	#define LOG_FINISH 1<<3
 	int segA;//it*1
 	int segB;//it*10
 	int segC;//it*10
