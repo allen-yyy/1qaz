@@ -1,1 +1,7 @@
 //Needs struct
+struct diskinfo{
+    int disksize;
+    char devicetype;//DEVTYPE_HD--1 DEVTYPE_FD--2 DEVTYPE_USB--3
+    int disknr;
+};
+

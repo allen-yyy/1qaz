@@ -83,6 +83,8 @@ void HAFS_format(int disknr1)
 	bsmarg->filesys[2]='F';
 	bsmarg->filesys[3]='S';
 	bsmarg->version = FS_VERSION;
+	bsmarg->device = DEVTYPE_HD;
+	bsmarg->seg_a_bit = 128; 
 	
 	return;
 }

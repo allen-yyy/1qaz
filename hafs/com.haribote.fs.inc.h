@@ -45,10 +45,10 @@ struct bsmar{	//like ext2 fs's super block.
 	#define DEVTYPE_HD 1
 	#define DEVTYPE_FD 2
 	#define DEVTYPE_USB 3
-	int allsize1;
-	int allsize2;
-	int allsize3;
-	int allsize4;
+	int allsize1;	//use Byte 
+	int allsize2;	//use KB
+	int allsize3;	//use KB,too
+	int allsize4;	//use GB
 	int os;		//usually is 1--hariboteos
 	int seg_a_bit;	//usually is 128
 	int status; //now fs status
