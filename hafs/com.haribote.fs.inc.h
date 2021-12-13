@@ -71,6 +71,11 @@ struct FILED{
 	int flongM;//use KB
 	int flongH;//use KB,too
 	int type;  //file type
+	#define T_file 1<<0
+	#define T_dir 1<<1
+	#define T_hide 1<<2
+	#define T_link 1<<3
+	#define T_sys 1<<4
 	char dirs; //if it is dir,the number of dir FILEDs.
 	char root[3];
 	int  nextoff;
@@ -83,6 +88,8 @@ struct FILEA{
 	int longL;//use B
 	int longH;//use KB
 	long longl;//use KB,too
+	int nextseg;
+	int nextoff;
 	//then the data
 };
 

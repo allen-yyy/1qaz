@@ -5,3 +5,4 @@ void mem_free(void *buf);
 void memcpy(void *a,void *b,int size);
 void disk_write(int disknr,int lba,int size,void *buf);//5
 void disk_info(int disknr,struct diskinfo *buf);
+void memset(void src,int value,int size);
