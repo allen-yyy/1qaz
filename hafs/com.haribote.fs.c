@@ -95,12 +95,17 @@ void HAFS_format(int disknr1)
 	bsmarg->filesys[3]='S';
 	bsmarg->version = FS_VERSION;
 	bsmarg->device = DEVTYPE_HD;
-	bsmarg->seg_a_bit = 128; 
+	
 	
 	struct diskinfo info;
 	disk_info(disknr,&info);
 	bsmarg->device=(int)(info.devicetype);
 	bsmarg->allsize1=info.disksize;
+	
+	
+	int tmp=bsmarg->allsize1 / SEG_LONG / 1600;
+	if(tmp<6) tmp=5;
+	bsmarg->seg_a_bit = tmp; 
 	
 	bsmarg->status=0;
 	memset(bsmarg->pad,0,431*4+0*2);
@@ -130,10 +135,75 @@ void HAFS_format(int disknr1)
 	rootdirg->flag=dataflag;
 	rootdirg->numfile=2;
 	rootdirg->files[0].flag=fileflag;
-	rootdirg->files[0].filenamelen=1;
-	rootdirg->files[0].flongL=88+3;
-	rootdirg->files[0].dirs=2;
-	rootdirg->files[0].filenamelen=1;
+	//rootdirg->files[0].flongL=88+3;
+	//rootdirg->files[0].dirs=2;
+	//rootdirg->files[0].filenamelen=1;
+	rootdirg->files[0]->node=0;
+	rootdirg->files[0]->resize=20;
+	rootdirg->files[0]->nextoff=20;
+	rootdirg->files[0]->filenamelen=1;
+	rootdirg->files[0]->filename[0]='.';
+	rootdirg->files[0]->filename[1]=' ';
+	rootdirg->files[0]->filename[2]=' ';
+	rootdirg->files[0]->filename[3]=' ';
+	rootdirg->files[0]->type=T_dir;
+	
+	struct FILED *tmp=(&rootdirg->files[0])+rootdirg->files[0].nextoff;
+	tmp->node=0;
+	tmp->resize=20;
+	tmp->nextoff=rootdirg->files[0].nextoff+rootdirg->files[1].resize;
+	tmp->filenamelen=2;
+	tmp->filename[0]='.';
+	tmp->filename[1]='.';
+	tmp->filename[2]=' ';
+	tmp->filename[3]=' ';
+	tmp->type=T_dir; 
+	
+	memcpy(buf1,segs,sizeof(struct segn));
+	memcpy(buf1+sizeof(segn),rootdirg,sizeof(struct rootdir));
+	disk_write(disknr,3,SEG_LONG,buf1);
+	memset(buf1,0,SEG_LONG);
+	
+	/*log*/
+	segs->segn++;
+	
+	logg->many=4;
+	logg->logs[0].segA=1;
+	logg->logs[0].segB=0;
+	logg->logs[0].segC=0;
+	logg->logs[0].type=LOG_WRITE;
+	
+	logg->logs[1].segA=2;
+	logg->logs[1].segB=0;
+	logg->logs[1].segC=0;
+	logg->logs[1].type=LOG_WRITE;
+	
+	logg->logs[2].segA=3;
+	logg->logs[2].segB=0;
+	logg->logs[2].segC=0;
+	logg->logs[2].type=LOG_WRITE;
+	
+	logg->logs[3].segA=4;
+	logg->logs[3].segB=0;
+	logg->logs[3].segC=0;
+	logg->logs[3].type=LOG_WRITE;
+	
+	memcpy(buf1,segs,sizeof(struct segn));
+	memcpy(buf1+sizeof(segn),logg,sizeof(struct log));
+	disk_write(disknr,4,SEG_LONG,buf1);
+	memset(buf1,0,SEG_LONG);
+	
+	/*node*/
+	struct FILEND *onen=(struct FILED *)buf1;
+	onen->num=0;
+	onen->flag=fileflag;
+	onen->flongL=40;
+	onen->flongH=0;
+	onen->dirs=1;
+	onen->blocks[0]=2*2+0;
+	onen->root[0]=onen->root[1]=onen->root[2]=0;
+	disk_write(disknr,5,SEG_LONG,buf1);
+	
 	
 	return;
 }

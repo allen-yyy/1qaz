@@ -27,7 +27,7 @@ struct segn{
 };
 
 struct freetable{
-	int bitmap_a[40]; //128 seg as a bit. 
+	int bitmap_a[40]; //n seg as a bit. 
 };
 
 struct map{
@@ -62,14 +62,15 @@ struct bsmar{	//like ext2 fs's super block.
 	int pad[431];
 };
 
-struct FILED{
-	int flag;
-	int fsegL;//use it*1
-	int fsegM;//use it*512
-	int fsegH;//use it*512,too
+struct FILEND{
+	int flag;	//file
+	int num;
+	//int fsegL;//use it*1
+	//int fsegH;//use it*512
+	//int fsegH;//use it*512,too
 	int flongL;//use B
-	int flongM;//use KB
-	int flongH;//use KB,too
+	int flongH;//use KB
+	//int flongH;//use KB,too
 	int type;  //file type
 	#define T_file 1<<0
 	#define T_dir 1<<1
@@ -78,19 +79,28 @@ struct FILED{
 	#define T_sys 1<<4
 	char dirs; //if it is dir,the number of dir FILEDs.
 	char root[3];
-	int  nextoff;
-	int filenamelen; 
-	char filename[0];//44 B total
+	int blocks[16];
+	//88 B total
 };
+
+struct FILED{
+	int node;
+	int nextoff;
+	short resize;
+	short type;
+	int filenamelen; 
+	char filename[0];
+	//16 B total
+}; 
 
 struct FILEA{
 	int flag;
+	int node;
 	int longL;//use B
 	int longH;//use KB
-	long longl;//use KB,too
-	int nextseg;
-	int nextoff;
+	//long longl; use KB,too
 	//then the data
+	//16 B total
 };
 
 #define segflag		0x6e676573	//segn
@@ -101,7 +111,7 @@ struct FILEA{
 
 struct rootdir{
 	int flag;  //data
-	int numfile;
+	int numfiles;
 	struct FILED files[0];
 };
 
