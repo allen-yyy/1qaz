@@ -42,7 +42,7 @@ int HAFS_init(int disknr1)
 	disk_read(disknr,3,SEG_LONG,buf);
 	memcpy(rootdirg,buf+sizeof(struct segn),SEG_LONG-sizeof(struct segn));
 	if(rootdirg->flag!=dataflag) goto error;
-	if(rootdirg->numfile>ROOTFILEMAX) goto error;
+	if(rootdirg->numfiles>ROOTFILEMAX) goto error;
 	if(rootdirg->files[0].filenamelen!=1) goto error;//first FILED always is .
 	
 	/*log*/
@@ -88,7 +88,7 @@ void HAFS_format(int disknr1)
 	struct segn *segs =  (struct segn *)mem_alloc(sizeof(struct segn));
 	/*bsmar*/
 	bsmarg->flag = bsmarflag;
-	bsmarg->etcflag = etcflag;
+	bsmarg->etcflag = etc1flag;
 	bsmarg->filesys[0]='H';
 	bsmarg->filesys[1]='A';
 	bsmarg->filesys[2]='F';
@@ -107,6 +107,10 @@ void HAFS_format(int disknr1)
 	if(tmp<6) tmp=5;
 	bsmarg->seg_a_bit = tmp; 
 	
+	bsmarg->maps.frees = bsmarg->allsize1 / SEG_LONG / tmp;
+	memset(bsmarg->maps.free,0,1600);
+	bsmarg->maps.free[0].bitmap_a[0]=1;//seg-group1 used 
+	
 	bsmarg->status=0;
 	memset(bsmarg->pad,0,431*4+0*2);
 	/*seg1*/
@@ -119,7 +123,7 @@ void HAFS_format(int disknr1)
 	
 	char *buf1=(char *)mem_alloc(SEG_LONG);
 	memcpy(buf1,seg1g,sizeof(struct seg1));
-	memcpy(buf1+sizeof(seg1),bsmarg,sizeof(struct bsmar));
+	memcpy(buf1+sizeof(struct seg1),bsmarg,sizeof(struct bsmar));
 	disk_write(disknr,2,SEG_LONG,buf1);
 	memset(buf1,0,SEG_LONG);
 	
@@ -133,34 +137,31 @@ void HAFS_format(int disknr1)
 	
 	/*rootdir*/
 	rootdirg->flag=dataflag;
-	rootdirg->numfile=2;
-	rootdirg->files[0].flag=fileflag;
-	//rootdirg->files[0].flongL=88+3;
-	//rootdirg->files[0].dirs=2;
-	//rootdirg->files[0].filenamelen=1;
-	rootdirg->files[0]->node=0;
-	rootdirg->files[0]->resize=20;
-	rootdirg->files[0]->nextoff=20;
-	rootdirg->files[0]->filenamelen=1;
-	rootdirg->files[0]->filename[0]='.';
-	rootdirg->files[0]->filename[1]=' ';
-	rootdirg->files[0]->filename[2]=' ';
-	rootdirg->files[0]->filename[3]=' ';
-	rootdirg->files[0]->type=T_dir;
+	rootdirg->numfiles=2;
+	//rootdirg->files[0].flag=fileflag;
+	rootdirg->files[0].node=0;
+	rootdirg->files[0].resize=20;
+	rootdirg->files[0].nextoff=20;
+	rootdirg->files[0].filenamelen=1;
+	rootdirg->files[0].filename[0]='.';
+	rootdirg->files[0].filename[1]=' ';
+	rootdirg->files[0].filename[2]=' ';
+	rootdirg->files[0].filename[3]=' ';
+	rootdirg->files[0].type=T_dir;
 	
-	struct FILED *tmp=(&rootdirg->files[0])+rootdirg->files[0].nextoff;
-	tmp->node=0;
-	tmp->resize=20;
-	tmp->nextoff=rootdirg->files[0].nextoff+rootdirg->files[1].resize;
-	tmp->filenamelen=2;
-	tmp->filename[0]='.';
-	tmp->filename[1]='.';
-	tmp->filename[2]=' ';
-	tmp->filename[3]=' ';
-	tmp->type=T_dir; 
+	struct FILED *tmp2=(&rootdirg->files[0])+rootdirg->files[0].nextoff;
+	tmp2->node=0;
+	tmp2->resize=20;
+	tmp2->nextoff=rootdirg->files[0].nextoff+rootdirg->files[1].resize;
+	tmp2->filenamelen=2;
+	tmp2->filename[0]='.';
+	tmp2->filename[1]='.';
+	tmp2->filename[2]=' ';
+	tmp2->filename[3]=' ';
+	tmp2->type=T_dir; 
 	
 	memcpy(buf1,segs,sizeof(struct segn));
-	memcpy(buf1+sizeof(segn),rootdirg,sizeof(struct rootdir));
+	memcpy(buf1+sizeof(struct segn),rootdirg,sizeof(struct rootdir));
 	disk_write(disknr,3,SEG_LONG,buf1);
 	memset(buf1,0,SEG_LONG);
 	
@@ -204,11 +205,59 @@ void HAFS_format(int disknr1)
 	onen->root[0]=onen->root[1]=onen->root[2]=0;
 	disk_write(disknr,5,SEG_LONG,buf1);
 	
+	/*seg-group*/
+	//none
 	
+	//OK 
 	return;
 }
 
+char *get_name(char *names)
+{
+	char *name;
+	int i=0;
+	while(names[i]!='\\'&&names[i]!=0)
+	{
+		i++;
+	}
+	name=(char *)mem_alloc(i);
+	memcpy(name,names,i);
+	return name;
+}
 
+/*find-file*/
+int HAFS_findFile(char *name) //hafs dir-name:drive+path+filename like C:\a\a\a\a.int.file
+{
+	int node=0,i=0,len=0;
+	for(i=0;i<65536;i++)
+	{
+		if(name[i]!=0)
+		{
+			len++;
+		}else{
+			break;
+		}
+	}
+	name+=3;
+	char *tmpn=get_name(name);
+	
+	while(1)
+	{
+		
+		
+	}
+	return node;
+}
+
+struct handle_s handle_data[512];
+int handle_map[64];
+
+/*open*/
+int HAFS_open(char *name,int flag) 
+{
+	
+	return 0; 
+} 
 
 
 

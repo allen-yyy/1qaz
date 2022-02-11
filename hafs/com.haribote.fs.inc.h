@@ -105,7 +105,7 @@ struct FILEA{
 
 #define segflag		0x6e676573	//segn
 #define bsmarflag	0x616d7362  //bsma
-#define etcflag		0x31637465	//etc1
+#define etc1flag	0x31637465	//etc1
 #define fileflag	0x656c6966	//file
 #define dataflag	0x61746164	//data
 
